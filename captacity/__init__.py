@@ -144,7 +144,7 @@ def add_captions(
     fit_function = None,
 
     padding = 50,
-    position = ("center", "center"), # TODO: Implement this
+    height_pos: float = 0.5, # TODO: Implement this
 
     shadow_strength = 1.0,
     shadow_blur = 0.1,
@@ -154,6 +154,7 @@ def add_captions(
     initial_prompt = None,
     segments = None,
 
+    model: str = "base",
     use_local_whisper = "auto",
 ):
     _start_time = time.time()
@@ -179,7 +180,7 @@ def add_captions(
             use_local_whisper = detect_local_whisper(print_info)
 
         if use_local_whisper:
-            segments = transcriber.transcribe_locally(temp_audio_file, initial_prompt)
+            segments = transcriber.transcribe_locally(temp_audio_file, initial_prompt, model)
         else:
             segments = transcriber.transcribe_with_api(temp_audio_file, initial_prompt)
 
@@ -222,7 +223,7 @@ def add_captions(
         for current_index, caption in enumerate(captions_to_draw):
             line_data = calculate_lines(caption["text"], font, font_size, stroke_width, text_bbox_width)
 
-            text_y_offset = video.h // 2 - line_data["height"] // 2
+            text_y_offset = video.h * height_pos - line_data["height"] // 2
             index = 0
             for line in line_data["lines"]:
                 pos = ("center", text_y_offset)
