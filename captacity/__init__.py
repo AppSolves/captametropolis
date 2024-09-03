@@ -143,7 +143,7 @@ def add_captions(
     line_count = 2,
     fit_function = None,
 
-    padding = 50,
+    width: float = 0.6,
     height_pos: float = 0.5, # TODO: Implement this
 
     shadow_strength = 1.0,
@@ -189,7 +189,7 @@ def add_captions(
 
     # Open the video file
     video = VideoFileClip(video_file)
-    text_bbox_width = video.w-padding*2
+    text_bbox_width = video.w * width
     clips = [video]
 
     captions = segment_parser.parse(
