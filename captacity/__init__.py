@@ -154,7 +154,7 @@ def add_captions(
     initial_prompt = None,
     segments = None,
 
-    model: str = "base",
+    model_name: str = "base",
     use_local_whisper = "auto",
 ):
     _start_time = time.time()
@@ -180,7 +180,7 @@ def add_captions(
             use_local_whisper = detect_local_whisper(print_info)
 
         if use_local_whisper:
-            segments = transcriber.transcribe_locally(temp_audio_file, initial_prompt, model)
+            segments = transcriber.transcribe_locally(temp_audio_file, initial_prompt, model_name)
         else:
             segments = transcriber.transcribe_with_api(temp_audio_file, initial_prompt)
 

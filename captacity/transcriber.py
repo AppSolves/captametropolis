@@ -31,7 +31,7 @@ def transcribe_with_api(
 
 def transcribe_locally(
     audio_file: str,
-    model: str = "base",
+    model_name: str = "base",
     prompt: str | None = None
 ):
     """
@@ -40,7 +40,7 @@ def transcribe_locally(
     """
     import whisper
 
-    model = whisper.load_model(model)
+    model = whisper.load_model(model_name)
 
     transcription = model.transcribe(
         audio=audio_file,
