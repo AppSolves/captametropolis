@@ -137,7 +137,7 @@ def add_captions(
     font_size: int = 100,
     font_color: str = "white",
     stroke_width: int = 3,
-    stroke_color: int = "black",
+    stroke_color: str = "black",
     highlight_current_word: bool = True,
     highlight_color: str = "yellow",
     line_count: int = 2,
