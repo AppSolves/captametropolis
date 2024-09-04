@@ -114,15 +114,6 @@ def create_text(
     if arg_hash in text_cache:
         return text_cache[arg_hash].copy()
 
-    def bounce_in(t):
-        duration = 0.3
-        start_size = 0.75
-
-        if t < duration:
-            return start_size + (1 - start_size) * t / duration
-
-        return 1.0
-
     text_clip = TextClipEx(
         txt=text,
         fontsize=fontsize,
