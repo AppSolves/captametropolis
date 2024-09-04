@@ -1,10 +1,8 @@
 import openai
 from openai._types import FileTypes
 
-def transcribe_with_api(
-    audio_file: FileTypes,
-    prompt: str | None = None
-):
+
+def transcribe_with_api(audio_file: FileTypes, prompt: str | None = None):
     """
     Transcribe an audio file using the OpenAI Whisper API
     """
@@ -23,16 +21,17 @@ def transcribe_with_api(
 
     # Return response in same format
     # as local Whisper format
-    return [{
-        "start": transcript.segments[0]["start"],
-        "end": transcript.segments[-1]["end"],
-        "words": transcript.words,
-    }]
+    return [
+        {
+            "start": transcript.segments[0]["start"],
+            "end": transcript.segments[-1]["end"],
+            "words": transcript.words,
+        }
+    ]
+
 
 def transcribe_locally(
-    audio_file: str,
-    model_name: str = "base",
-    prompt: str | None = None
+    audio_file: str, model_name: str = "base", prompt: str | None = None
 ):
     """
     Transcribe an audio file using the local Whisper package
@@ -40,7 +39,7 @@ def transcribe_locally(
     """
     import whisper
 
-    if model not in whisper.available_models():
+    if model_name not in whisper.available_models():
         raise ValueError(f"Model {model_name} not found")
 
     model = whisper.load_model(model_name)

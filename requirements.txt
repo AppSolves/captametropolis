@@ -1,3 +1,9 @@
 moviepy
 pillow
 openai
+openai-whisper
+setuptools-rust
+torch
+numpy==1.26.4
+ffmpeg-python
+opencv-python
