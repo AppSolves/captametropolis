@@ -180,9 +180,9 @@ def add_captions(
             use_local_whisper = detect_local_whisper(print_info)
 
         if use_local_whisper:
-            segments = transcriber.transcribe_locally(temp_audio_file, initial_prompt, model_name)
+            segments = transcriber.transcribe_locally(audio_file=temp_audio_file, prompt=initial_prompt, model_name=model_name)
         else:
-            segments = transcriber.transcribe_with_api(temp_audio_file, initial_prompt)
+            segments = transcriber.transcribe_with_api(audio_file=temp_audio_file, prompt=initial_prompt)
 
     if print_info:
         print("Generating video elements...")

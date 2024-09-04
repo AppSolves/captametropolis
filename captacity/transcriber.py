@@ -40,6 +40,9 @@ def transcribe_locally(
     """
     import whisper
 
+    if model not in whisper.available_models():
+        raise ValueError(f"Model {model_name} not found")
+
     model = whisper.load_model(model_name)
 
     transcription = model.transcribe(
