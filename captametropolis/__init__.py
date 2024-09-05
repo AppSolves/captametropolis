@@ -8,6 +8,7 @@ from moviepy.config import change_settings
 from moviepy.editor import CompositeVideoClip, VideoFileClip
 
 from . import segment_parser, transcriber
+from .__version__ import __version__
 from .errors import UtilityNotFoundError
 from .text_drawer import Word, create_shadow, create_text_ex, get_text_size_ex
 from .utils import (
@@ -19,7 +20,13 @@ from .utils import (
     run_as_admin,
 )
 
-__all__ = ["add_captions"]
+__all__ = [
+    "__version__",
+    "add_captions",
+    "ffmpeg_installed",
+    "imagemagick_binary",
+    "run_as_admin",
+]
 
 lines_cache = {}
 

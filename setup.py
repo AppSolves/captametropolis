@@ -11,9 +11,20 @@ def get_requirements():
         return f.read().splitlines()
 
 
+def get_version():
+    version_path = os.path.join(
+        os.path.dirname(__file__), "captametropolis", "__version__.py"
+    )
+    with open(version_path, "r") as f:
+        for line in f:
+            if line.startswith("__version__"):
+                return line.split("=")[1].strip().strip('"')
+    return "1.0.0"
+
+
 setup(
     name="captametropolis",
-    version="1.0.0",
+    version=get_version(),
     packages=find_packages(),
     install_requires=get_requirements(),
     extras_require={
