@@ -193,14 +193,14 @@ def create(
         ),
     ] = "base",
     use_local_whisper: Annotated[
-        Optional[str | bool],
+        Optional[bool],
         typer.Option(
             ...,
             "--use-local-whisper",
             "-ulw",
             help="Use the local Whisper model if available.",
         ),
-    ] = "auto",
+    ] = True,
     temp_audiofile: Annotated[
         Optional[Path],
         typer.Option(
