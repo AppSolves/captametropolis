@@ -24,7 +24,6 @@ class AliasGroup(typer.core.TyperGroup):
         return default_name
 
 
-set_password: Optional[str] = None
 app: typer.Typer = typer.Typer(
     name="Captametropolis",
     help=":sparkles: An [italic]awesome[/italic] [orange1]CLI tool[/orange1] to add captions to your videos. :movie_camera: :closed_caption: :rocket:",
@@ -233,3 +232,11 @@ def create(
         use_local_whisper=use_local_whisper,
         temp_audiofile=temp_audiofile,
     )
+
+
+def main():
+    app()
+
+
+if __name__ == "__main__":
+    main()
