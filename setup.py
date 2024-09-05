@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
+import os
+
 from setuptools import find_packages, setup
 
 
 def get_requirements():
-    with open("requirements.txt") as f:
+    requirements_path = os.path.join(os.path.dirname(__file__), "requirements.txt")
+    with open(requirements_path, "r") as f:
         return f.read().splitlines()
 
 
