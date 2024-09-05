@@ -17,7 +17,6 @@ from .utils import (
     ffmpeg_installed,
     get_font_path,
     imagemagick_binary,
-    run_as_admin,
 )
 
 __all__ = [
@@ -25,7 +24,6 @@ __all__ = [
     "add_captions",
     "ffmpeg_installed",
     "imagemagick_binary",
-    "run_as_admin",
 ]
 
 lines_cache = {}
@@ -136,8 +134,6 @@ def add_captions(
     use_local_whisper: str | bool = "auto",
     temp_audiofile: str | None = None,
 ):
-    run_as_admin(verbose)
-
     _start_time = time.time()
 
     font_path, injected_font_name = get_font_path(font_path)
