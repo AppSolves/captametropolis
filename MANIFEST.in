@@ -1,3 +1,3 @@
-recursive-include captacity/assets *
+recursive-include captametropolis/assets *
 include README.md
 include LICENSE

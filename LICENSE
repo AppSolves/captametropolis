@@ -1,3 +1,12 @@
+# License
+
+This project was forked from https://github.com/unconv/captacity.
+The original captacity project is licensed under the MIT License:
+
+## Original License
+
+MIT License
+
 Copyright 2024 Unconventional Coding
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -5,3 +14,30 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Modifications
+
+This repository ("Captametropolis") is a modified version of the captacity project originally developed by Unconventional Coding.
+The modifications include among others, additional options, bug fixes, and changes in the structure of the code.
+
+### Summary of Modifications:
+
+- Modified LICENSE file
+- Modified README.md file
+- Modified files in connection with the package installation and PyPI
+- Added options to the `add_captions` function
+- Changes to GitHub related files, e.g. .gitignore, CHANGELOG.md etc.
+- Changes in view of the PyPI package name
+- and more...
+
+### Ownership of Modifications
+
+The modifications made in this fork are provided under the same MIT License terms.
+While the original captacity project is owned by Unconventional Coding, the modifications and the new version of this repository are managed by AppSolves.
+
+### Attribution
+
+The original software is licensed under the MIT License, and all rights are retained by the original author, Unconventional Coding.
+The modifications in this fork are also provided under the MIT License and are attributed to AppSolves.
+
+For more details on the original project, visit https://github.com/unconv/captacity.

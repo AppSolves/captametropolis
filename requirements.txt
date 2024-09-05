@@ -1,9 +1,10 @@
 moviepy
 pillow
 openai
-openai-whisper
 setuptools-rust
 torch
 numpy<2.1
 ffmpeg-python
 opencv-python
+fonttools
+lxml

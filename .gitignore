@@ -3,4 +3,7 @@ __pycache__/
 with_transcript.avi
 build/
 dist/
-captacity.egg-info/
+captametropolis.egg-info/
+.vscode/
+.venv/
+test.py
