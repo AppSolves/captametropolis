@@ -2,7 +2,7 @@
 
 import re
 from pathlib import Path
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Optional
 
 import typer
 import typer.core
@@ -193,7 +193,7 @@ def create(
         ),
     ] = "base",
     use_local_whisper: Annotated[
-        Optional[Literal["auto"] | bool],
+        Optional[str | bool],
         typer.Option(
             ...,
             "--use-local-whisper",
