@@ -39,7 +39,7 @@ else:
     change_settings({"IMAGEMAGICK_BINARY": imagemagick_binary()})
 
 
-def fits_frame(line_count, font, font_size, stroke_width, frame_width):
+def fits_frame(line_count, font: tuple[str, str], font_size, stroke_width, frame_width):
     def fit_function(text):
         lines = calculate_lines(text, font, font_size, stroke_width, frame_width)
         return len(lines["lines"]) <= line_count
@@ -49,7 +49,7 @@ def fits_frame(line_count, font, font_size, stroke_width, frame_width):
 
 def calculate_lines(
     text,
-    font,
+    font: tuple[str, str],
     font_size,
     stroke_width,
     frame_width,
@@ -178,7 +178,7 @@ def add_captions(
             if fit_function
             else fits_frame(
                 line_count,
-                font_path,
+                (injected_font_name, font_path),
                 font_size,
                 stroke_width,
                 text_bbox_width,
@@ -208,7 +208,7 @@ def add_captions(
         for current_index, caption in enumerate(captions_to_draw):
             line_data = calculate_lines(
                 caption["text"],
-                font_path,
+                (injected_font_name, font_path),
                 font_size,
                 stroke_width,
                 text_bbox_width,
@@ -236,7 +236,7 @@ def add_captions(
                     shadow = create_shadow(
                         line["text"],
                         font_size,
-                        font_path,
+                        (injected_font_name, font_path),
                         shadow_blur,
                         opacity=1,
                     )
@@ -249,7 +249,7 @@ def add_captions(
                     shadow = create_shadow(
                         line["text"],
                         font_size,
-                        font_path,
+                        (injected_font_name, font_path),
                         shadow_blur,
                         opacity=shadow_left,
                     )

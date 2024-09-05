@@ -52,7 +52,7 @@ def get_text_size(text, fontsize, font, stroke_width):
     return text_clip.size
 
 
-def get_text_size_ex(text, font, fontsize, stroke_width):
+def get_text_size_ex(text, font: tuple[str, str], fontsize, stroke_width):
     text_clip = create_text_ex(
         text, fontsize=fontsize, color="white", font=font, stroke_width=stroke_width
     )
@@ -234,7 +234,11 @@ def create_text_ex(
 
 
 def create_shadow(
-    text: str, font_size: int, font: str, blur_radius: float, opacity: float = 1.0
+    text: str,
+    font_size: int,
+    font: tuple[str, str],
+    blur_radius: float,
+    opacity: float = 1.0,
 ):
     global shadow_cache
 
