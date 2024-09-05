@@ -4,6 +4,6 @@ openai
 openai-whisper
 setuptools-rust
 torch
-numpy==1.26.4
+numpy<2.1
 ffmpeg-python
 opencv-python
