@@ -263,7 +263,7 @@ def add_captions(
                     word_list,
                     font_size,
                     font_color,
-                    (font_path, injected_font_name),
+                    (injected_font_name, font_path),
                     stroke_color=stroke_color,
                     stroke_width=stroke_width,
                 )

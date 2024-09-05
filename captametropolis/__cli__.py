@@ -181,6 +181,7 @@ def create(
             "--initial-prompt",
             "-ip",
             help="The initial prompt to be passed to Whisper.",
+            show_default=False,
         ),
     ] = None,
     model_name: Annotated[
@@ -208,13 +209,14 @@ def create(
             "--temp-audiofile",
             "-ta",
             help="The path to the temporary audio file to be used for Whisper.",
+            show_default=False,
         ),
     ] = None,
 ):
     add_captions(
-        video_file=video_file,
-        output_file=output_file,
-        font_path=font_path,
+        video_file=str(video_file.resolve()),
+        output_file=str(output_file.resolve()),
+        font_path=str(font_path.resolve()),
         font_size=font_size,
         font_color=font_color,
         stroke_width=stroke_width,
@@ -230,7 +232,7 @@ def create(
         initial_prompt=initial_prompt,
         model_name=model_name,
         use_local_whisper=use_local_whisper,
-        temp_audiofile=temp_audiofile,
+        temp_audiofile=str(temp_audiofile.resolve()) if temp_audiofile else None,
     )
 
 
