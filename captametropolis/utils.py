@@ -30,9 +30,14 @@ _IMGMGCK_DOCTYPE = """
 
 
 def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
+    if os.name == "nt":
+        try:
+            return ctypes.windll.shell32.IsUserAnAdmin()
+        except:
+            return False
+    elif os.name == "posix":
+        return os.getuid() == 0
+    else:
         return False
 
 
@@ -40,13 +45,18 @@ def run_as_admin(verbose: bool = False):
     if verbose:
         print("Checking admin privileges...")
     if not is_admin():
-        print("WARNING: You need admin privileges to run this script.")
+        if verbose:
+            print("WARNING: You need admin privileges to run this script.")
         if os.name == "posix":
             os.execvp("sudo", ["sudo", "python3"] + sys.argv)
         else:
             ctypes.windll.shell32.ShellExecuteW(
-                None, "runas", sys.executable, __file__, None, 1
+                None, "runas", sys.executable, " ".join(sys.argv), None, 1
             )
+        sys.exit(0)
+    else:
+        if verbose:
+            print("Admin privileges granted.")
 
 
 def detect_local_whisper(print_info):
