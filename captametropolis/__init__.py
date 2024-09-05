@@ -11,11 +11,12 @@ from . import segment_parser, transcriber
 from .errors import UtilityNotFoundError
 from .text_drawer import Word, create_shadow, create_text_ex, get_text_size_ex
 from .utils import (
-    detach_font_from_imagemagick,
+    _detach_font_from_imagemagick,
     detect_local_whisper,
     ffmpeg_installed,
     get_font_path,
     imagemagick_binary,
+    run_as_admin,
 )
 
 __all__ = ["add_captions"]
@@ -128,10 +129,12 @@ def add_captions(
     use_local_whisper: str | bool = "auto",
     temp_audiofile: str | None = None,
 ):
+    run_as_admin(verbose)
+
     _start_time = time.time()
 
     font_path, injected_font_name = get_font_path(font_path)
-    atexit.register(detach_font_from_imagemagick, injected_font_name)
+    atexit.register(_detach_font_from_imagemagick, injected_font_name)
 
     if verbose:
         print("Extracting audio...")

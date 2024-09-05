@@ -1,6 +1,8 @@
+import ctypes
 import os
 import shutil
 import subprocess as sp
+import sys
 import winreg as wr
 
 from fontTools.ttLib import TTFont
@@ -25,6 +27,26 @@ _IMGMGCK_DOCTYPE = """
   <!ATTLIST include file CDATA #REQUIRED>
 ]>
 """
+
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+
+def run_as_admin(verbose: bool = False):
+    if verbose:
+        print("Checking admin privileges...")
+    if not is_admin():
+        print("WARNING: You need admin privileges to run this script.")
+        if os.name == "posix":
+            os.execvp("sudo", ["sudo", "python3"] + sys.argv)
+        else:
+            ctypes.windll.shell32.ShellExecuteW(
+                None, "runas", sys.executable, __file__, None, 1
+            )
 
 
 def detect_local_whisper(print_info):
@@ -155,7 +177,7 @@ def get_font_info(font_path: str) -> dict:
     return font_info
 
 
-def inject_font_into_imagemagick(fontpath: str):
+def _inject_font_into_imagemagick(fontpath: str):
     if not os.path.exists(fontpath):
         raise FileNotFoundError(f"Font file not found: {fontpath}")
 
@@ -199,7 +221,7 @@ def get_font_path(font) -> tuple[str, str]:
         raise ValueError("Only TrueType fonts are currently supported")
 
     if os.path.exists(font):
-        injected_font_name = inject_font_into_imagemagick(os.path.abspath(font))
+        injected_font_name = _inject_font_into_imagemagick(os.path.abspath(font))
         return os.path.abspath(font), injected_font_name
 
     dirname = os.path.dirname(__file__)
@@ -208,11 +230,11 @@ def get_font_path(font) -> tuple[str, str]:
     if not os.path.exists(font):
         raise FileNotFoundError(f"Font '{font}' not found")
 
-    injected_font_name = inject_font_into_imagemagick(os.path.abspath(font))
+    injected_font_name = _inject_font_into_imagemagick(os.path.abspath(font))
     return os.path.abspath(font), injected_font_name
 
 
-def detach_font_from_imagemagick(font_name: str) -> None:
+def _detach_font_from_imagemagick(font_name: str) -> None:
     font_container = os.path.join(imagemagick_directory(), "type-ghostscript.xml")
     if not os.path.exists(font_container):
         raise FileNotFoundError("Font container not found")
