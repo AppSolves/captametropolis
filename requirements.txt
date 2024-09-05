@@ -8,3 +8,5 @@ ffmpeg-python
 opencv-python
 fonttools
 lxml
+typer
+rich
