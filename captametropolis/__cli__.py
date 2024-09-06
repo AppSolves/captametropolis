@@ -338,7 +338,7 @@ def is_font_registered_cmd(
     if font_name:
         typer.echo(f"Font registered: {font_name}")
     else:
-        typer.echo(f"Font not registered: {font_path_or_name}")
+        typer.echo(f"Font NOT registered: {font_path_or_name}")
 
 
 def main():

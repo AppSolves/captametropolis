@@ -49,14 +49,21 @@ def require_admin(quiet_run: bool = False, verbose: bool = False):
     if not is_admin():
         if verbose:
             print("WARNING: You need admin privileges to run this script.")
-        if os.name == "posix":
-            os.execvp("sudo", ["sudo", "python3"] + sys.argv)
+
+        if ".py" in sys.argv[0]:
+            command = [sys.executable] + sys.argv
         else:
+            command = sys.argv
+
+        if os.name == "posix":
+            os.execvp("sudo", ["sudo"] + command)
+        else:
+            params = " ".join(command[1:])
             ctypes.windll.shell32.ShellExecuteW(
                 None,
                 "runas",
-                sys.executable,
-                " ".join(sys.argv),
+                command[0],
+                params,
                 None,
                 0 if quiet_run else 1,
             )
