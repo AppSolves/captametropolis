@@ -1,4 +1,3 @@
-import atexit
 import os
 import tempfile
 import time
@@ -12,10 +11,9 @@ from .__version__ import __version__
 from .errors import UtilityNotFoundError
 from .text_drawer import Word, create_shadow, create_text_ex, get_text_size_ex
 from .utils import (
-    _detach_font_from_imagemagick,
-    detect_local_whisper,
+    _detect_local_whisper,
+    _get_font_path,
     ffmpeg_installed,
-    get_font_path,
     imagemagick_binary,
 )
 
@@ -136,8 +134,7 @@ def add_captions(
 ):
     _start_time = time.time()
 
-    font_path, injected_font_name = get_font_path(font_path)
-    atexit.register(_detach_font_from_imagemagick, injected_font_name)
+    font_path, injected_font_name = _get_font_path(font_path)
 
     if verbose:
         print("Extracting audio...")
@@ -152,7 +149,7 @@ def add_captions(
             print("Transcribing audio...")
 
         if use_local_whisper == "auto":
-            use_local_whisper = detect_local_whisper(verbose)
+            use_local_whisper = _detect_local_whisper(verbose)
 
         if use_local_whisper:
             segments = transcriber.transcribe_locally(

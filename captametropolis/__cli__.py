@@ -8,6 +8,7 @@ import typer
 import typer.core
 
 from captametropolis import add_captions
+from captametropolis.utils import is_font_registered, register_font, unregister_font
 
 
 class AliasGroup(typer.core.TyperGroup):
@@ -234,6 +235,84 @@ def create(
         use_local_whisper=use_local_whisper,
         temp_audiofile=str(temp_audiofile.resolve()) if temp_audiofile else None,
     )
+
+
+@app.command(
+    name="register_font",
+    help="Register a font file to be used for captions.",
+)
+def register_font_cmd(
+    font_path: Annotated[
+        Path,
+        typer.Argument(
+            ...,
+            help="The path to the font file to be registered.",
+            show_default=False,
+        ),
+    ],
+    verbose: Annotated[
+        Optional[bool],
+        typer.Option(
+            ...,
+            "--verbose",
+            "-v",
+            help="Show verbose output.",
+        ),
+    ] = False,
+):
+    registered_font_name = register_font(str(font_path.resolve()), verbose=verbose)
+    typer.echo(f"Registered font: {registered_font_name}")
+
+
+@app.command(
+    name="unregister_font",
+    help="Unregister a font file from being used for captions.",
+)
+def unregister_font_cmd(
+    font_path_or_name: Annotated[
+        str,
+        typer.Argument(
+            ...,
+            help="The path of the font file or the font's name to be unregistered.",
+            show_default=False,
+        ),
+    ],
+    verbose: Annotated[
+        Optional[bool],
+        typer.Option(
+            ...,
+            "--verbose",
+            "-v",
+            help="Show verbose output.",
+        ),
+    ] = False,
+):
+    result = unregister_font(font_path_or_name, verbose=verbose)
+    if result:
+        typer.echo(f"Unregistered font: {font_path_or_name}")
+    else:
+        typer.echo(f"Font not registered: {font_path_or_name}")
+
+
+@app.command(
+    name="is_font_registered",
+    help="Check if a font file is registered to be used for captions.",
+)
+def is_font_registered_cmd(
+    font_path_or_name: Annotated[
+        str,
+        typer.Argument(
+            ...,
+            help="The path of the font file or the font's name to be checked.",
+            show_default=False,
+        ),
+    ],
+):
+    font_name = is_font_registered(font_path_or_name)
+    if font_name:
+        typer.echo(f"Font registered: {font_name}")
+    else:
+        typer.echo(f"Font not registered: {font_path_or_name}")
 
 
 def main():

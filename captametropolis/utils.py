@@ -1,10 +1,14 @@
+import ctypes
 import os
 import shutil
 import subprocess as sp
+import sys
 import winreg as wr
 
 from fontTools.ttLib import TTFont
 from lxml import etree as ET
+
+from .errors import FontNotRegisteredError
 
 _IMGMGCK_DOCTYPE = """
 <!DOCTYPE typemap [
@@ -27,16 +31,46 @@ _IMGMGCK_DOCTYPE = """
 """
 
 
-def detect_local_whisper(print_info):
+def is_admin():
+    if os.name == "nt":
+        try:
+            return ctypes.windll.shell32.IsUserAnAdmin()
+        except:
+            return False
+    elif os.name == "posix":
+        return os.getuid() == 0
+    else:
+        return False
+
+
+def require_admin(verbose: bool = False):
+    if verbose:
+        print("Checking admin privileges...")
+    if not is_admin():
+        if verbose:
+            print("WARNING: You need admin privileges to run this script.")
+        if os.name == "posix":
+            os.execvp("sudo", ["sudo", "python3"] + sys.argv)
+        else:
+            ctypes.windll.shell32.ShellExecuteW(
+                None, "runas", sys.executable, " ".join(sys.argv), None, 1
+            )
+        sys.exit(0)
+    else:
+        if verbose:
+            print("Admin privileges granted.")
+
+
+def _detect_local_whisper(verbose: bool = False):
     try:
         import whisper
 
         use_local_whisper = True
-        if print_info:
+        if verbose:
             print("Using local whisper model...")
     except ImportError:
         use_local_whisper = False
-        if print_info:
+        if verbose:
             print("Using OpenAI Whisper API...")
 
     return use_local_whisper
@@ -112,7 +146,7 @@ def imagemagick_binary() -> str:
         return "unset"
 
 
-def get_font_info(font_path: str) -> dict:
+def _get_font_info(font_path: str) -> dict:
     font = TTFont(font_path)
 
     name_table = font["name"]
@@ -155,7 +189,7 @@ def get_font_info(font_path: str) -> dict:
     return font_info
 
 
-def _inject_font_into_imagemagick(fontpath: str):
+def register_font(fontpath: str, verbose: bool = False) -> str:
     if not os.path.exists(fontpath):
         raise FileNotFoundError(f"Font file not found: {fontpath}")
 
@@ -163,7 +197,9 @@ def _inject_font_into_imagemagick(fontpath: str):
     if not os.path.exists(font_container):
         raise FileNotFoundError("Font container not found")
 
-    font_info = get_font_info(fontpath)
+    require_admin(verbose)
+
+    font_info = _get_font_info(fontpath)
 
     tree = ET.parse(font_container)
     root = tree.getroot()
@@ -194,13 +230,36 @@ def _inject_font_into_imagemagick(fontpath: str):
     return font_info["Full Font Name"]
 
 
-def get_font_path(font) -> tuple[str, str]:
+def is_font_registered(font_path_or_name: str) -> str | None:
+    font_container = os.path.join(imagemagick_directory(), "type-ghostscript.xml")
+    if not os.path.exists(font_container):
+        raise FileNotFoundError("Font container not found")
+
+    if os.path.exists(font_path_or_name):
+        font_name = _get_font_info(font_path_or_name)["Full Font Name"]
+    else:
+        font_name = font_path_or_name
+
+    tree = ET.parse(font_container)
+    root = tree.getroot()
+
+    for font in root.findall("type"):
+        if font.attrib["fullname"] == font_name:
+            return font_name
+
+    return None
+
+
+def _get_font_path(font) -> tuple[str, str]:
     if not font.endswith(".ttf"):
         raise ValueError("Only TrueType fonts are currently supported")
 
     if os.path.exists(font):
-        injected_font_name = _inject_font_into_imagemagick(os.path.abspath(font))
-        return os.path.abspath(font), injected_font_name
+        injected_font_name = is_font_registered(font)
+        if injected_font_name:
+            return os.path.abspath(font), injected_font_name
+
+        raise FontNotRegisteredError(font)
 
     dirname = os.path.dirname(__file__)
     font = os.path.join(dirname, "assets", "fonts", font)
@@ -208,14 +267,24 @@ def get_font_path(font) -> tuple[str, str]:
     if not os.path.exists(font):
         raise FileNotFoundError(f"Font '{font}' not found")
 
-    injected_font_name = _inject_font_into_imagemagick(os.path.abspath(font))
-    return os.path.abspath(font), injected_font_name
+    injected_font_name = is_font_registered(font)
+    if injected_font_name:
+        return os.path.abspath(font), injected_font_name
+
+    raise FontNotRegisteredError(font)
 
 
-def _detach_font_from_imagemagick(font_name: str) -> None:
+def unregister_font(font_path_or_name: str, verbose: bool = False) -> bool:
     font_container = os.path.join(imagemagick_directory(), "type-ghostscript.xml")
     if not os.path.exists(font_container):
         raise FileNotFoundError("Font container not found")
+
+    require_admin(verbose)
+
+    if os.path.exists(font_path_or_name):
+        font_name = _get_font_info(font_path_or_name)["Full Font Name"]
+    else:
+        font_name = font_path_or_name
 
     try:
         tree = ET.parse(font_container)
@@ -223,12 +292,14 @@ def _detach_font_from_imagemagick(font_name: str) -> None:
         for font in root.findall("type"):
             if font.attrib["fullname"] == font_name:
                 root.remove(font)
-                break
-        tree.write(
-            font_container,
-            encoding="utf-8",
-            xml_declaration=True,
-            doctype=_IMGMGCK_DOCTYPE,
-        )
+                tree.write(
+                    font_container,
+                    encoding="utf-8",
+                    xml_declaration=True,
+                    doctype=_IMGMGCK_DOCTYPE,
+                )
+                return True
+
+        return False
     except Exception as e:
         raise e
