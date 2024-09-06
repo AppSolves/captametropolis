@@ -17,14 +17,28 @@ Add automatic captions to YouTube Shorts (and other videos) using Whisper and Mo
 
 ## Quick start
 
-After installing the requirements, make sure to enter your terminal in **administrator mode** and run the following commands:
+After installing the requirements, enter your terminal and run the following commands:
 
 ```bash
 $ pip install captametropolis -U
 $ captametropolis <video_file> <output_file>
 ```
 
-> **INFO**: You need to run `Captametropolis` in administrator mode because it has to inject your fonts into the ImageMagick font directory.
+> **INFO**: You need to run `register_font` in administrator mode to be able to use custom fonts because it has to inject your fonts into the ImageMagick font directory. See the below example for more information.
+
+Run this command in administrator mode once to register your font (you can also run it normally, but you will be prompted to run it in administrator mode):
+
+```bash
+$ captametropolis register_font "path/to/your/font.ttf" -qr
+```
+
+or programmatically:
+
+```python
+from captametropolis.utils import register_font
+
+register_font("path/to/your/font.ttf", quiet_run=True) # Will also ask for admin rights (UAC panel)
+```
 
 ## Programmatic use
 
@@ -34,6 +48,8 @@ import captametropolis
 captametropolis.add_captions(
     video_file="my_short.mp4",
     output_file="my_short_with_captions.mp4",
+    font_path="path/to/your/font.ttf", # Now you can use your custom font here
+    ...
 )
 ```
 
