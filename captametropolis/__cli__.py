@@ -27,7 +27,7 @@ class AliasGroup(typer.core.TyperGroup):
 
 app: typer.Typer = typer.Typer(
     name="Captametropolis",
-    help=":sparkles: An [italic]awesome[/italic] [orange1]CLI tool[/orange1] to add captions to your videos. :movie_camera: :closed_caption: :rocket:",
+    help=":sparkles: An [italic]awesome[/italic] [orange1]CLI tool[/orange1] to add captions to your videos. :movie_camera: :rocket:",
     rich_markup_mode="rich",
     epilog="Made with [red]:red_heart:[/red]  and :muscle: by [cyan]AppSolves[/cyan] | [blue link=https://github.com/AppSolves/captametropolis]GitHub[/blue link]",
     cls=AliasGroup,
