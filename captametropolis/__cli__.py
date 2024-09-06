@@ -250,6 +250,15 @@ def register_font_cmd(
             show_default=False,
         ),
     ],
+    quiet_run: Annotated[
+        Optional[bool],
+        typer.Option(
+            ...,
+            "--quiet-run",
+            "-qr",
+            help="Run the command quietly without any output or console.",
+        ),
+    ] = False,
     verbose: Annotated[
         Optional[bool],
         typer.Option(
@@ -260,7 +269,11 @@ def register_font_cmd(
         ),
     ] = False,
 ):
-    registered_font_name = register_font(str(font_path.resolve()), verbose=verbose)
+    registered_font_name = register_font(
+        str(font_path.resolve()),
+        quiet_run=quiet_run,
+        verbose=verbose,
+    )
     typer.echo(f"Registered font: {registered_font_name}")
 
 
@@ -277,6 +290,15 @@ def unregister_font_cmd(
             show_default=False,
         ),
     ],
+    quiet_run: Annotated[
+        Optional[bool],
+        typer.Option(
+            ...,
+            "--quiet-run",
+            "-qr",
+            help="Run the command quietly without any output or console.",
+        ),
+    ] = False,
     verbose: Annotated[
         Optional[bool],
         typer.Option(
@@ -287,7 +309,11 @@ def unregister_font_cmd(
         ),
     ] = False,
 ):
-    result = unregister_font(font_path_or_name, verbose=verbose)
+    result = unregister_font(
+        font_path_or_name,
+        quiet_run=quiet_run,
+        verbose=verbose,
+    )
     if result:
         typer.echo(f"Unregistered font: {font_path_or_name}")
     else:

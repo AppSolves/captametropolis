@@ -43,7 +43,7 @@ def is_admin():
         return False
 
 
-def require_admin(verbose: bool = False):
+def require_admin(quiet_run: bool = False, verbose: bool = False):
     if verbose:
         print("Checking admin privileges...")
     if not is_admin():
@@ -53,7 +53,12 @@ def require_admin(verbose: bool = False):
             os.execvp("sudo", ["sudo", "python3"] + sys.argv)
         else:
             ctypes.windll.shell32.ShellExecuteW(
-                None, "runas", sys.executable, " ".join(sys.argv), None, 1
+                None,
+                "runas",
+                sys.executable,
+                " ".join(sys.argv),
+                None,
+                0 if quiet_run else 1,
             )
         sys.exit(0)
     else:
@@ -189,7 +194,7 @@ def _get_font_info(font_path: str) -> dict:
     return font_info
 
 
-def register_font(fontpath: str, verbose: bool = False) -> str:
+def register_font(fontpath: str, quiet_run: bool = False, verbose: bool = False) -> str:
     if not os.path.exists(fontpath):
         raise FileNotFoundError(f"Font file not found: {fontpath}")
 
@@ -197,7 +202,7 @@ def register_font(fontpath: str, verbose: bool = False) -> str:
     if not os.path.exists(font_container):
         raise FileNotFoundError("Font container not found")
 
-    require_admin(verbose)
+    require_admin(quiet_run, verbose)
 
     font_info = _get_font_info(fontpath)
 
@@ -274,12 +279,14 @@ def _get_font_path(font) -> tuple[str, str]:
     raise FontNotRegisteredError(font)
 
 
-def unregister_font(font_path_or_name: str, verbose: bool = False) -> bool:
+def unregister_font(
+    font_path_or_name: str, quiet_run: bool = False, verbose: bool = False
+) -> bool:
     font_container = os.path.join(imagemagick_directory(), "type-ghostscript.xml")
     if not os.path.exists(font_container):
         raise FileNotFoundError("Font container not found")
 
-    require_admin(verbose)
+    require_admin(quiet_run, verbose)
 
     if os.path.exists(font_path_or_name):
         font_name = _get_font_info(font_path_or_name)["Full Font Name"]
