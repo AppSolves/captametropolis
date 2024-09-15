@@ -9,7 +9,7 @@ Check out these examples with captions added using **Captametropolis** (by [Curi
 <a href="http://www.youtube.com/watch?v=C1nqHA2-YIk" title="Why Flamingos Are Pink: The Fascinating Reason Behind Their Color!">
   <img src="http://img.youtube.com/vi/C1nqHA2-YIk/0.jpg" alt="CurioBurstz No. 1" width="300" height="225" hspace="25">
 </a>
-<a href="http://www.youtube.com/watch?v=C1Wik3XewG40" title="Why Flamingos Are Pink: The Fascinating Reason Behind Their Color!">
+<a href="http://www.youtube.com/watch?v=1Wik3XewG40" title="Why You Get Dizzy After Spinning: The Science Explained!">
   <img src="http://img.youtube.com/vi/1Wik3XewG40/0.jpg" alt="CurioBurstz No. 2" width="300" height="225">
 </a>
 
