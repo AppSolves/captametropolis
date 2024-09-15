@@ -1,46 +1,87 @@
-# Captametropolis
+<div align="center">
 
-> **INFO**: This is forked from [Captacity](https://github.com/unconv/captacity).
-> 
-> Just like Captacity but BIGGER! 
+<img src="./assets/captametropolis.png" alt="readmepic" width="640" height="320" style="border-radius: 25px;">
 
-Add automatic captions to YouTube Shorts (and other videos) using Whisper and MoviePy!
+<br>
 
-## Requirements
+[![CurioBurstz No. 1](http://img.youtube.com/vi/C1nqHA2-YIk/0.jpg)](http://www.youtube.com/watch?v=C1nqHA2-YIk "Why Flamingos Are Pink: The Fascinating Reason Behind Their Color!")
 
-- Install the **latest** verion of [FFmpeg](https://ffmpeg.org/download.html) (make sure it's in your `PATH`)
-- Install the **latest** version of [ImageMagick](https://imagemagick.org/script/download.php). Make sure to tick both boxes during installation:
+# `Captametropolis`
 
-    - Install legacy utilities (e.g. convert)
-    - Add application directory to your system `PATH`
+![GitHub issues](https://img.shields.io/github/issues/AppSolves/captametropolis)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/AppSolves/captametropolis)
 
+[![Stargazers repo roster for @AppSolves/captametropolis](https://reporoster.com/stars/dark/AppSolves/captametropolis)](https://github.com/AppSolves/captametropolis/stargazers)
+[![Forkers repo roster for @AppSolves/captametropolis](https://reporoster.com/forks/dark/AppSolves/captametropolis)](https://github.com/AppSolves/captametropolis/network/members)
 
-## Quick start
+<h4><code>Captametropolis</code> brings next-level automated captions to your YouTube Shorts and other videos using Whisper and MoviePy.</h4>
 
-After installing the requirements, enter your terminal and run the following commands:
+[Introduction](#introduction-) • [Features](#features-) • [Installation](#installation-%EF%B8%8F) • [Usage](#usage-) • [Customization](#customization-) • [License](#license-)
+
+</div>
+
+<br />
+
+> 👋 Welcome to **Captametropolis**, a tool designed to make your videos even more engaging with stunning automatic captions! The process is seamless, fast, and adds flair to your content.
+
+# Captametropolis ✨
+
+## Introduction 📖
+> Forked from [unconv/captacity](https://github.com/unconv/captacity)
+>
+> Just like captacity, but **BIGGER**!
+
+**Captametropolis** takes video captioning to a new level! Whether you're making YouTube Shorts, TikToks, or any other type of video content, Captametropolis helps you effortlessly add beautiful, dynamic captions with precision using **Whisper** for speech recognition and **MoviePy** for video editing.
+
+## Features 🚀
+- **Automatic Captions**: Powered by Whisper, Captametropolis transcribes your video and adds captions with ease.
+- **Custom Fonts & Styles**: Customize your captions with unique fonts, colors, sizes, shadows, and more.
+- **Highlight Words**: Focus attention on important parts by highlighting specific words in real-time.
+- **Local & API Whisper Support**: Use OpenAI's Whisper locally or via API for transcription.
+- **Programmatic Integration**: Easily integrate Captametropolis into your Python projects.
+  
+## Installation 🛠️
+
+### Prerequisites 📦
+Make sure to install the following:
+1. **FFmpeg**: Download the latest version from [here](https://ffmpeg.org/download.html) and ensure it’s added to your `PATH`.
+2. **ImageMagick**: Download from [here](https://imagemagick.org/script/download.php), making sure to select:
+    - Install legacy utilities (e.g. `convert`)
+    - Add application directory to your system `PATH`.
+
+### Install Captametropolis ⚙️
+
+To install the latest version of Captametropolis, run the following command:
 
 ```bash
-$ pip install captametropolis -U
-$ captametropolis <video_file> <output_file>
+pip install captametropolis -U
 ```
 
-> **INFO**: You need to run `register_font` in administrator mode to be able to use custom fonts because it has to inject your fonts into the ImageMagick font directory. See the below example for more information.
-
-Run this command in administrator mode once to register your font (you can also run it normally, but you will be prompted to run it in administrator mode):
+Once installed, you can add captions to a video by running:
 
 ```bash
-$ captametropolis register_font "path/to/your/font.ttf" -qr
+captametropolis <video_file> <output_file>
 ```
 
-or programmatically:
+## Font Registration 🎨
+
+To use custom fonts in your captions, register them with ImageMagick. Run the following in **admin mode**:
+
+```bash
+captametropolis register_font "path/to/your/font.ttf" -qr
+```
+
+Alternatively, register fonts programmatically in Python:
 
 ```python
 from captametropolis.utils import register_font
 
-register_font("path/to/your/font.ttf", quiet_run=True) # Will also ask for admin rights (UAC panel)
+register_font("path/to/your/font.ttf", quiet_run=True)  # Will also ask for admin rights
 ```
 
-## Programmatic use
+## Programmatic Use 💻
+
+Easily add captions to your videos programmatically using Captametropolis:
 
 ```python
 import captametropolis
@@ -48,16 +89,15 @@ import captametropolis
 captametropolis.add_captions(
     video_file="my_short.mp4",
     output_file="my_short_with_captions.mp4",
-    font_path="path/to/your/font.ttf", # Now you can use your custom font here
-    ...
+    font_path="path/to/your/font.ttf",  # Use your custom font here
 )
 ```
 
-## Custom configuration
+## Customization 🎨
+
+Customize your captions with full control over fonts, colors, effects, and more! Check out the customizable parameters:
 
 ```python
-import captametropolis
-
 captametropolis.add_captions(
     video_file="my_short.mp4",
     output_file="my_short_with_captions.mp4",
@@ -76,23 +116,30 @@ captametropolis.add_captions(
     highlight_color = "red",
 
     line_count=1,
-
-    rel_width = 0.8,
+    rel_width = 0.8,  # Relative width of the text box
 )
 ```
 
-## Using Whisper locally
+## Using Whisper Locally vs API 🧠
 
-By default, OpenAI Whisper is used locally if the `openai-whisper` package is installed. Otherwise, the OpenAI Whisper API is used. If you want to force the use of the API, you can specify `use_local_whisper=False` in the arguments to `captametropolis.add_captions`:
+By default, Captametropolis uses OpenAI’s Whisper locally if the `openai-whisper` package is installed. If you want to use the OpenAI Whisper API instead, you can force this behavior:
 
 ```python
-import captametropolis
-
 captametropolis.add_captions(
     video_file="my_short.mp4",
     output_file="my_short_with_captions.mp4",
-    use_local_whisper=False,
+    use_local_whisper=False,  # Use the OpenAI Whisper API
 )
 ```
 
-You can install Captametropolis with `pip install captametropolis[local]` to install Whisper locally as well.
+To install Whisper locally, run:
+
+```bash
+pip install captametropolis[local] -U
+```
+
+## Conclusion 🎉
+**Captametropolis** makes adding captions to your videos as simple as it is powerful! Enhance your videos and reach a wider audience with engaging captions. 🚀
+
+## License 📜
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
