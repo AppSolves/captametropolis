@@ -1,10 +1,19 @@
 <div align="center">
 
-<img src="./assets/captametropolis.png" alt="readmepic" width="640" height="320" style="border-radius: 25px;">
+<img src="./assets/captametropolis_readme.png" alt="readmepic" width="640" height="320" style="border-radius: 25px;">
 
-<br>
+-----
 
-[![CurioBurstz No. 1](http://img.youtube.com/vi/C1nqHA2-YIk/0.jpg)](http://www.youtube.com/watch?v=C1nqHA2-YIk "Why Flamingos Are Pink: The Fascinating Reason Behind Their Color!")
+Check out these examples with captions added using **Captametropolis** (by [CurioBurstz](https://www.youtube.com/@curioburstz?sub_confirmation=1)):
+
+<a href="http://www.youtube.com/watch?v=C1nqHA2-YIk" title="Why Flamingos Are Pink: The Fascinating Reason Behind Their Color!">
+  <img src="http://img.youtube.com/vi/C1nqHA2-YIk/0.jpg" alt="CurioBurstz No. 1" width="300" height="225" hspace="25">
+</a>
+<a href="http://www.youtube.com/watch?v=C1Wik3XewG40" title="Why Flamingos Are Pink: The Fascinating Reason Behind Their Color!">
+  <img src="http://img.youtube.com/vi/1Wik3XewG40/0.jpg" alt="CurioBurstz No. 2" width="300" height="225">
+</a>
+
+-----
 
 # `Captametropolis`
 
