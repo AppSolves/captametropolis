@@ -13,6 +13,7 @@ from .text_drawer import Word, create_shadow, create_text_ex, get_text_size_ex
 from .utils import (
     _detect_local_whisper,
     _get_font_path,
+    ffmpeg_binary,
     ffmpeg_installed,
     imagemagick_binary,
 )
@@ -28,6 +29,9 @@ lines_cache = {}
 
 if not ffmpeg_installed():
     raise UtilityNotFoundError("FFmpeg")
+else:
+    change_settings({"FFMPEG_BINARY": ffmpeg_binary()})
+    os.environ["IMAGEIO_FFMPEG_EXE"] = ffmpeg_binary()
 
 if imagemagick_binary() == "unset":
     raise UtilityNotFoundError("ImageMagick")

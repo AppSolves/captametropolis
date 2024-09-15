@@ -88,8 +88,12 @@ def _detect_local_whisper(verbose: bool = False):
     return use_local_whisper
 
 
+def ffmpeg_binary() -> str:
+    return shutil.which("ffmpeg") or "unset"
+
+
 def ffmpeg_installed() -> bool:
-    return shutil.which("ffmpeg") is not None
+    return ffmpeg_binary() != "unset"
 
 
 def imagemagick_directory() -> str:

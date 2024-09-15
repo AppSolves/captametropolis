@@ -8,11 +8,11 @@ Add automatic captions to YouTube Shorts (and other videos) using Whisper and Mo
 
 ## Requirements
 
-- Install [FFmpeg](https://ffmpeg.org/download.html) (make sure it's in your `PATH`)
-- Install [ImageMagick](https://imagemagick.org/script/download.php). Make sure to tick both boxes during installation:
+- Install the **latest** verion of [FFmpeg](https://ffmpeg.org/download.html) (make sure it's in your `PATH`)
+- Install the **latest** version of [ImageMagick](https://imagemagick.org/script/download.php). Make sure to tick both boxes during installation:
 
     - Install legacy utilities (e.g. convert)
-    - Add application directory to your system path
+    - Add application directory to your system `PATH`
 
 
 ## Quick start
