@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./assets/captametropolis_readme.png" alt="readmepic" width="640" height="320" style="border-radius: 25px;">
+<img src="https://raw.githubusercontent.com/AppSolves/captametropolis/master/assets/captametropolis_readme.png" alt="readmepic" width="640" height="320" style="border-radius: 25px;">
 
 -----
 
