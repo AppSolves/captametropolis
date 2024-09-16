@@ -8,6 +8,7 @@ import typer
 import typer.core
 
 from captametropolis import add_captions
+from captametropolis.__version__ import __version__
 from captametropolis.utils import is_font_registered, register_font, unregister_font
 
 
@@ -29,7 +30,7 @@ app: typer.Typer = typer.Typer(
     name="Captametropolis",
     help=":sparkles: An [italic]awesome[/italic] [orange1]CLI tool[/orange1] to add captions to your videos. :movie_camera: :rocket:",
     rich_markup_mode="rich",
-    epilog="Made with [red]:red_heart:[/red]  and :muscle: by [cyan]AppSolves[/cyan] | [blue link=https://github.com/AppSolves/captametropolis]GitHub[/blue link]",
+    epilog=f"Made with [red]:red_heart:[/red]  and :muscle: by [cyan link=https://github.com/AppSolves]AppSolves[/cyan link] | [blue link=https://github.com/AppSolves/captametropolis]GitHub[/blue link] | [green]v{__version__}[/green] from [yellow link=https://pypi.org/project/captametropolis/]PyPI[/yellow link]",
     cls=AliasGroup,
     context_settings={
         "help_option_names": ["-h", "--help", "-?"],
@@ -339,6 +340,14 @@ def is_font_registered_cmd(
         typer.echo(f"Font registered: {font_name}")
     else:
         typer.echo(f"Font NOT registered: {font_path_or_name}")
+
+
+@app.command(
+    name="version",
+    help="Show the version of Captametropolis.",
+)
+def version_cmd():
+    typer.echo(f"Captametropolis v{__version__}")
 
 
 def main():
