@@ -1,4 +1,5 @@
 recursive-include captametropolis/assets *
+recursive-include assets *
 include README.md
 include LICENSE
 include CHANGELOG.md
