@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.8] - 2024-09-16
+## [1.1.0] - 2024-11-23
+
+- Fix dependency conflicts with `MoviePy 2.0.0`
+
+## [1.0.8 - 1.0.9] - 2024-09-16
 
 - Fix banner display in `README.md` on `PyPI`.
 

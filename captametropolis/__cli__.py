@@ -318,7 +318,7 @@ def unregister_font_cmd(
     if result:
         typer.echo(f"Unregistered font: {font_path_or_name}")
     else:
-        typer.echo(f"Font not registered: {font_path_or_name}")
+        typer.echo(f"Font is NOT registered: {font_path_or_name}")
 
 
 @app.command(
@@ -337,9 +337,9 @@ def is_font_registered_cmd(
 ):
     font_name = is_font_registered(font_path_or_name)
     if font_name:
-        typer.echo(f"Font registered: {font_name}")
+        typer.echo(f"Font is registered: {font_name}")
     else:
-        typer.echo(f"Font NOT registered: {font_path_or_name}")
+        typer.echo(f"Font is NOT registered: {font_path_or_name}")
 
 
 @app.command(

@@ -11,7 +11,7 @@ from .__version__ import __version__
 from .errors import UtilityNotFoundError
 from .text_drawer import Word, create_shadow, create_text_ex, get_text_size_ex
 from .utils import (
-    _detect_local_whisper,
+    is_local_transcription_available,
     _get_font_path,
     ffmpeg_binary,
     ffmpeg_installed,
@@ -153,7 +153,7 @@ def add_captions(
             print("Transcribing audio...")
 
         if use_local_whisper == "auto":
-            use_local_whisper = _detect_local_whisper(verbose)
+            use_local_whisper = is_local_transcription_available(verbose)
 
         if use_local_whisper:
             segments = transcriber.transcribe_locally(

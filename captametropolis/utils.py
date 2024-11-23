@@ -29,7 +29,7 @@ _IMGMGCK_DOCTYPE = """
   <!ATTLIST include file CDATA #REQUIRED>
 ]>
 """
-
+_STANDARD_FONTS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "assets", "fonts")
 
 def is_admin():
     if os.name == "nt":
@@ -73,7 +73,7 @@ def require_admin(quiet_run: bool = False, verbose: bool = False):
             print("Admin privileges granted.")
 
 
-def _detect_local_whisper(verbose: bool = False):
+def is_local_transcription_available(verbose: bool = False):
     try:
         import whisper
 
@@ -207,6 +207,8 @@ def _get_font_info(font_path: str) -> dict:
 
 def register_font(fontpath: str, quiet_run: bool = False, verbose: bool = False) -> str:
     if not os.path.exists(fontpath):
+        fontpath = os.path.join(_STANDARD_FONTS_DIR, fontpath)
+    if not os.path.exists(fontpath):
         raise FileNotFoundError(f"Font file not found: {fontpath}")
 
     font_container = os.path.join(imagemagick_directory(), "type-ghostscript.xml")
@@ -254,7 +256,7 @@ def is_font_registered(font_path_or_name: str) -> str | None:
     if os.path.exists(font_path_or_name):
         font_name = _get_font_info(font_path_or_name)["Full Font Name"]
     else:
-        font_name = font_path_or_name
+        font_name = font_path_or_name.removesuffix(".ttf")
 
     tree = ET.parse(font_container)
     root = tree.getroot()
@@ -266,7 +268,7 @@ def is_font_registered(font_path_or_name: str) -> str | None:
     return None
 
 
-def _get_font_path(font) -> tuple[str, str]:
+def _get_font_path(font: str) -> tuple[str, str]:
     if not font.endswith(".ttf"):
         raise ValueError("Only TrueType fonts are currently supported")
 
@@ -277,8 +279,7 @@ def _get_font_path(font) -> tuple[str, str]:
 
         raise FontNotRegisteredError(font)
 
-    dirname = os.path.dirname(__file__)
-    font = os.path.join(dirname, "assets", "fonts", font)
+    font = os.path.join(_STANDARD_FONTS_DIR, font)
 
     if not os.path.exists(font):
         raise FileNotFoundError(f"Font '{font}' not found")
@@ -302,7 +303,7 @@ def unregister_font(
     if os.path.exists(font_path_or_name):
         font_name = _get_font_info(font_path_or_name)["Full Font Name"]
     else:
-        font_name = font_path_or_name
+        font_name = font_path_or_name.removesuffix(".ttf")
 
     try:
         tree = ET.parse(font_container)

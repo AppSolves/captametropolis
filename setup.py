@@ -7,7 +7,7 @@ from setuptools import find_packages, setup
 
 def get_requirements():
     requirements_path = os.path.join(os.path.dirname(__file__), "requirements.txt")
-    with open(requirements_path, "r") as f:
+    with open(requirements_path, "r", encoding="utf-8") as f:
         return f.read().splitlines()
 
 
@@ -15,7 +15,7 @@ def get_version():
     version_path = os.path.join(
         os.path.dirname(__file__), "captametropolis", "__version__.py"
     )
-    with open(version_path, "r") as f:
+    with open(version_path, "r", encoding="utf-8") as f:
         for line in f:
             if line.startswith("__version__"):
                 return line.split("=")[1].strip().strip('"')
