@@ -11,11 +11,11 @@ from .__version__ import __version__
 from .errors import UtilityNotFoundError
 from .text_drawer import Word, create_shadow, create_text_ex, get_text_size_ex
 from .utils import (
-    is_local_transcription_available,
     _get_font_path,
     ffmpeg_binary,
     ffmpeg_installed,
     imagemagick_binary,
+    is_local_transcription_available,
 )
 
 __all__ = [
@@ -23,6 +23,7 @@ __all__ = [
     "add_captions",
     "ffmpeg_installed",
     "imagemagick_binary",
+    "is_local_transcription_available",
 ]
 
 lines_cache = {}

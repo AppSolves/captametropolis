@@ -41,7 +41,7 @@ setup(
     maintainer_email="contact@appsolves.dev",
     author_email="unconventionalcoding@gmail.com",
     description="Add Automatic Captions to YouTube Shorts with AI",
-    long_description=open("README.md").read(),
+    long_description=open("README.md", "r", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     entry_points={
         "console_scripts": [

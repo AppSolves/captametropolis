@@ -29,7 +29,10 @@ _IMGMGCK_DOCTYPE = """
   <!ATTLIST include file CDATA #REQUIRED>
 ]>
 """
-_STANDARD_FONTS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "assets", "fonts")
+_STANDARD_FONTS_DIR = os.path.join(
+    os.path.abspath(os.path.dirname(__file__)), "assets", "fonts"
+)
+
 
 def is_admin():
     if os.name == "nt":
@@ -54,12 +57,18 @@ def require_admin(quiet_run: bool = False, verbose: bool = False):
             command = [sys.executable] + sys.argv
         else:
             command = sys.argv
+        command[0] = os.path.abspath(os.path.normpath(command[0]))
+        if os.name == "nt" and command[0].startswith("\\\\?\\"):
+            command[0] = command[0].replace("\\\\?\\", "")
+
+        if verbose:
+            print(command)
 
         if os.name == "posix":
             os.execvp("sudo", ["sudo"] + command)
         else:
             params = " ".join(command[1:])
-            ctypes.windll.shell32.ShellExecuteW(
+            result = ctypes.windll.shell32.ShellExecuteW(
                 None,
                 "runas",
                 command[0],
@@ -67,6 +76,10 @@ def require_admin(quiet_run: bool = False, verbose: bool = False):
                 None,
                 0 if quiet_run else 1,
             )
+            if result <= 32:
+                if result == 5:
+                    print("ERROR: Access is denied.")
+                raise ctypes.WinError(result)
         sys.exit(0)
     else:
         if verbose:
@@ -152,7 +165,7 @@ def imagemagick_binary() -> str:
             "magick.exe" if "ImageMagick-7" in imgmgck_directory else "convert.exe"
         )
         imgmgck_binary = os.path.join(imgmgck_directory, imgmgck_executable)
-        if os.path.exists(imgmgck_binary):
+        if os.path.isfile(imgmgck_binary):
             return imgmgck_binary
         else:
             return "unset"
@@ -206,13 +219,13 @@ def _get_font_info(font_path: str) -> dict:
 
 
 def register_font(fontpath: str, quiet_run: bool = False, verbose: bool = False) -> str:
-    if not os.path.exists(fontpath):
-        fontpath = os.path.join(_STANDARD_FONTS_DIR, fontpath)
-    if not os.path.exists(fontpath):
+    if not os.path.isfile(fontpath):
+        fontpath = os.path.join(_STANDARD_FONTS_DIR, os.path.basename(fontpath))
+    if not os.path.isfile(fontpath):
         raise FileNotFoundError(f"Font file not found: {fontpath}")
 
     font_container = os.path.join(imagemagick_directory(), "type-ghostscript.xml")
-    if not os.path.exists(font_container):
+    if not os.path.isfile(font_container):
         raise FileNotFoundError("Font container not found")
 
     require_admin(quiet_run, verbose)
@@ -250,11 +263,17 @@ def register_font(fontpath: str, quiet_run: bool = False, verbose: bool = False)
 
 def is_font_registered(font_path_or_name: str) -> str | None:
     font_container = os.path.join(imagemagick_directory(), "type-ghostscript.xml")
-    if not os.path.exists(font_container):
+    if not os.path.isfile(font_container):
         raise FileNotFoundError("Font container not found")
 
-    if os.path.exists(font_path_or_name):
+    if os.path.isfile(font_path_or_name):
         font_name = _get_font_info(font_path_or_name)["Full Font Name"]
+    elif os.path.isfile(
+        os.path.join(_STANDARD_FONTS_DIR, os.path.basename(font_path_or_name))
+    ):
+        font_name = _get_font_info(
+            os.path.join(_STANDARD_FONTS_DIR, os.path.basename(font_path_or_name))
+        )["Full Font Name"]
     else:
         font_name = font_path_or_name.removesuffix(".ttf")
 
@@ -272,16 +291,16 @@ def _get_font_path(font: str) -> tuple[str, str]:
     if not font.endswith(".ttf"):
         raise ValueError("Only TrueType fonts are currently supported")
 
-    if os.path.exists(font):
+    if os.path.isfile(font):
         injected_font_name = is_font_registered(font)
         if injected_font_name:
             return os.path.abspath(font), injected_font_name
 
         raise FontNotRegisteredError(font)
 
-    font = os.path.join(_STANDARD_FONTS_DIR, font)
+    font = os.path.join(_STANDARD_FONTS_DIR, os.path.basename(font))
 
-    if not os.path.exists(font):
+    if not os.path.isfile(font):
         raise FileNotFoundError(f"Font '{font}' not found")
 
     injected_font_name = is_font_registered(font)
@@ -295,13 +314,19 @@ def unregister_font(
     font_path_or_name: str, quiet_run: bool = False, verbose: bool = False
 ) -> bool:
     font_container = os.path.join(imagemagick_directory(), "type-ghostscript.xml")
-    if not os.path.exists(font_container):
+    if not os.path.isfile(font_container):
         raise FileNotFoundError("Font container not found")
 
     require_admin(quiet_run, verbose)
 
-    if os.path.exists(font_path_or_name):
+    if os.path.isfile(font_path_or_name):
         font_name = _get_font_info(font_path_or_name)["Full Font Name"]
+    elif os.path.isfile(
+        os.path.join(_STANDARD_FONTS_DIR, os.path.basename(font_path_or_name))
+    ):
+        font_name = _get_font_info(
+            os.path.join(_STANDARD_FONTS_DIR, os.path.basename(font_path_or_name))
+        )["Full Font Name"]
     else:
         font_name = font_path_or_name.removesuffix(".ttf")
 
