@@ -3,7 +3,7 @@ pillow
 openai
 setuptools-rust
 torch
-numpy<2.1
+numpy
 ffmpeg-python
 opencv-python
 fonttools
